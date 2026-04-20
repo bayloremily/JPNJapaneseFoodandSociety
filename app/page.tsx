@@ -61,6 +61,7 @@ export default function Home() {
       ? shuffle([...quizItems.map((v) => v.kanji), distractor.kanji])
       : shuffle([...quizItems.map((v) => v.kanji)]);
 
+
     return { quizItems, wordBank };
   }
 
@@ -224,42 +225,6 @@ export default function Home() {
       }
     });
 
-    async function generateAIQuiz() {
-  try {
-    const res = await fetch("/api/generate-quiz", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ lessonKey: currentLessonKey }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.error || "Failed to generate quiz");
-    }
-
-    setQuizData({
-      quizItems: data.quizItems,
-      wordBank: data.wordBank,
-    });
-
-    setPlacements({});
-    setReadingInputs({});
-    setMeaningInputs({});
-    setBlankFeedback({});
-    setReadingFeedback({});
-    setMeaningFeedback({});
-    setBlankStatus({});
-    setResultsHtml("");
-    setSelectedBlank(null);
-  } catch (error) {
-    console.error(error);
-    alert("Could not generate AI quiz.");
-  }
-}
-
     setGrammarFeedback(nextFeedback);
   }
 
@@ -409,9 +374,6 @@ export default function Home() {
             </button>
             <button className="secondary" onClick={generateNewQuiz}>
               New Quiz
-            </button>
-            <button className="secondary" onClick={generateAIQuiz}>
-              Generate AI Quiz
             </button>
           </div>
 
